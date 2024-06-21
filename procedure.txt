@@ -1,0 +1,4 @@
+ui*
+create login schema*
+create user data schama
+server

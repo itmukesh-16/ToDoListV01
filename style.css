@@ -1,0 +1,46 @@
+*{
+    margin: 0;
+    padding: 0;
+    font-family: arial;
+}
+:root{
+    --black:black;
+    --yellow:yellow;
+    --white:white;
+    --skyblue:skyblue;
+}
+body{
+    height: 100%;
+    width: 50%;
+    display: flex;
+    justify-content:center;
+    align-items: center;
+    background-color:var(--skyblue);
+}
+
+/* ======================
+tolist header starts here
+=========================== */
+
+
+.toDoBody{
+    width:70vmin;
+    text-align: center;
+    color: lightblue;
+    padding: 1rem;
+    margin-top: 1rem;
+    border-radius:2em; 
+    border:1px solid var(--black);
+    min-height:30em;
+    background-color: var(--black);
+}
+
+#home-tab-pane{
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+}
+#optTaskList{
+    height: 100%;
+    width: 100%;
+}

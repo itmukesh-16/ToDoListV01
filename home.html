@@ -1,0 +1,159 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ToDoList By Mukesh</title>
+    <link rel="stylesheet" href="./node_modules/bootstrap-icons/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="./node_modules/bootstrap/dist/css/bootstrap.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+
+<link rel="stylesheet" href="style.css">
+</head>
+
+    <script>
+        var tasks=["ToDOList EMPTY add some Task to Do"];
+        var indexOfCompleteTask=[];
+         var completedTask=0;
+         var pendingTask=0;
+
+          function onloadTasks(){
+             document.getElementById("optTaskList").innerHTML="";
+             tasks.map(function(task){
+                var option=document.createElement("option");
+                option.text=task;
+                option.value=task;
+                
+                // finding and disable the complete task 
+                indexOfCompleteTask.map(function(t){
+                    if(t == task )
+                    {
+                        option.disabled=true;
+                        option.style.backgroundColor='red';
+                        option.style.color='white';
+                    }
+                })
+                document.getElementById("optTaskList").appendChild(option);
+             })
+             pendingTaskCount();
+             completedTaskCount();
+             totalTask();
+          }
+
+          function addTask(){
+            if(tasks[0]=="ToDOList EMPTY add some Task to Do"){
+                tasks.length=0;
+            }
+              var newTask=document.getElementById("txtAddTask").value;
+              tasks.push(newTask);
+              onloadTasks();
+              document.getElementById("txtAddTask").value="";
+              pendingTask+=1;
+              pendingTaskCount();
+          }
+
+          
+          function deleteTask(){
+              var select=document.getElementById("optTaskList").value;
+              var askPermission=confirm(`Delete " ${select} " ?`);
+              if(askPermission==true){
+                  var indexOfDeleteTask=tasks.indexOf(select);
+                  if(indexOfDeleteTask!=-1){
+                      tasks.splice(indexOfDeleteTask,1);
+                      pendingTask-=1;
+                      pendingTaskCount();
+                onloadTasks();
+           }
+        }
+    }
+            function clearTask(){
+              var askPermission=confirm(` Clear All Tasks ?`);
+              if(askPermission==true){
+
+                  tasks.length=0;
+                  onloadTasks();
+
+                  pendingTask=0;
+                  pendingTaskCount();
+                  completedTask=0;
+                  completedTaskCount();
+
+                }
+            }
+            function editTask(){
+                var select=document.getElementById("optTaskList").value;
+                flag_indexOfSelectedTask=tasks.indexOf(select);
+                changeTaskinto=prompt(`Edit " ${select} "`);
+                if(changeTaskinto!="" && changeTaskinto!=null){
+                    tasks.splice(flag_indexOfSelectedTask,1,changeTaskinto)
+                    document.getElementById("optTaskList").innerHTML="";
+                    totalTask();
+                    onloadTasks();
+                }
+            }
+            
+            function taskDone(){
+                var select=document.getElementById("optTaskList").value;
+                tasks.map(function(task){
+                    if(select == task){
+                        indexOfCompleteTask.push(task);
+                    }
+                })
+                document.getElementById("optTaskList").innerHTML="";
+
+                completedTask+=1;
+                completedTaskCount();
+                pendingTask-=1;
+                pendingTaskCount();
+                onloadTasks();
+            }
+
+            function totalTask(){
+                if(tasks[0]=="ToDOList EMPTY add some Task to Do"){
+                    tasks.length-=1;
+                }
+              document.getElementById("lblTotalTask").innerHTML=`Total Task : ${tasks.length} `;
+            }
+
+            function pendingTaskCount(){
+                document.getElementById("divPendingTask").innerHTML=` Pending :<br><b> ${pendingTask} </b>`;
+            }
+            function completedTaskCount(){
+                document.getElementById("divCompletedTask").innerHTML=` Done :<br> <b> ${completedTask} </b>`;
+            }
+
+    </script>
+</head>
+<body onload="onloadTasks() "  class="container-fluid" style="display: flex;justify-content:center;align-items: center;background-color: skyblue;">
+  
+   <div class="toDoBody">
+    <h1 ><span class="bi bi-calendar2-check  fs-2 text-warning"></span>  ToDoList</h1>
+    <div class="todolist-body">
+        <div class="row m-2 ">
+            <div class="input-group ">
+                <input type="text" class="form-control " placeholder="Enter Task" id="txtAddTask"><button onclick="addTask()" class="btn btn-primary">Add</button>
+            </div>
+        </div>
+
+        <div class=" input-group functionality row m-2 pe-3">
+            <button onclick="editTask()" class="btn btn-success bi bi-pen-fill col"> Edit</button>
+            <button onclick="deleteTask()" class="btn btn-warning bi bi-trash col"> Delete</button>
+            <button onclick="clearTask()" class="btn btn-danger bi bi-x-lg col"> Clear</button>
+       </div>
+                  
+        <select  class="form-control" size="10" id="optTaskList" name="">
+        </select>
+        <label for="" class="mt-1" id="lblTotalTask"></label>
+        <div class="row  p-3" id="divTaskCount">
+            <div class="m-1 col" id="divPendingTask" style="background-color: red;height: 3em;width:4em;"></div>
+            <div class="m-1 col" id="divCompletedTask" style="background-color: rgb(39, 186, 26);height: 3em;width:4em;"></div>
+            <button onclick="taskDone()" class="btn btn-success mt-2" id="btnTaskDone"><span class="bi bi-check fs-4" ></span> Done</button>
+        </div>
+    </div>
+   </div>
+    
+</body>
+</html>
